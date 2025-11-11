@@ -28,7 +28,7 @@
             </div>
 
             {{-- Grid Daftar Hewan Langka --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 @forelse ($animals as $animal)
                     {{-- Setiap item adalah link ke halaman detail --}}
                     <a href="{{ route('endangered_animals.show', $animal) }}" class="block bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition duration-200">

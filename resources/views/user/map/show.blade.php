@@ -22,7 +22,6 @@
             {{-- Detail Peta (Kotak Utama) --}}
             <div class="bg-white rounded-lg shadow-xl p-6 border border-gray-200 mb-12 text-center">
                 <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ $map->name }}</h1>
-                <p class="text-lg text-gray-500 mb-6">{{ $map->description ?? 'Lokasi Konservasi' }}</p>
 
                 {{-- Gambar Peta --}}
                 @if ($map->image_path)

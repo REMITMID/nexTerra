@@ -1,5 +1,6 @@
 @php
     // Pastikan folder view telah dibuat: resources/views/admin/media_partner
+    // Asumsi: $partners adalah koleksi Model MediaPartner
 @endphp
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100 relative">
@@ -18,10 +19,9 @@
                             ['name' => 'Hewan Langka', 'route' => 'endangered_animals.index'],
                             ['name' => 'Peta', 'route' => 'map.index'],
                             ['name' => 'Berita', 'route' => 'news.index'],
-                            ['name' => 'Media Partner', 'route' => 'media_partner.index'], // ROUTE NYATA
+                            ['name' => 'Media Partner', 'route' => 'media_partner.index'],
                         ];
                     @endphp
-
                     @foreach ($menuItems as $item)
                         @php
                             $href = ($item['route'] == '#') ? '#' : route($item['route']);
@@ -53,23 +53,40 @@
                 </button>
             </div>
 
-            {{-- Grid Daftar Mitra --}}
+            {{-- Grid Daftar Mitra (MODIFIED) --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse ($partners as $partner)
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 flex flex-col justify-between items-center text-center" style="min-height: 200px;">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
                         {{-- Tampilkan Logo Mitra --}}
-                        @if ($partner->logo_path)
-                             <img src="{{ asset('storage/' . $partner->logo_path) }}" alt="{{ $partner->name }}" class="w-full h-32 object-contain mb-3 rounded">
-                        @else
-                            <div class="w-full h-32 bg-gray-200 flex items-center justify-center mb-3 rounded">
+                        <div class="w-full h-32 flex items-center justify-center p-3">
+                            @if ($partner->logo_path)
+                                 <img src="{{ asset('storage/' . $partner->logo_path) }}" alt="{{ $partner->name }}" class="max-w-full max-h-full object-contain">
+                            @else
                                 <span class="text-gray-500 text-sm">No Logo</span>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
                         
-                        {{-- Tombol Update/Edit --}}
-                        <a href="{{ route('media_partner.show', $partner) }}" class="block w-full text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150 mt-auto">
-                            Update
-                        </a>
+                        <div class="p-4 pt-0">
+                            {{-- Nama Mitra --}}
+                            <h3 class="font-bold text-lg text-gray-800 mb-3 text-center">{{ $partner->name }}</h3>
+                            
+                            {{-- Grup Tombol Detail & Hapus --}}
+                            <div class="flex space-x-3">
+                                {{-- Tombol Detail/Edit (Route show digunakan untuk Edit Form Admin) --}}
+                                <a href="{{ route('media_partner.show', $partner) }}" class="flex-1 text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150">
+                                    Detail
+                                </a>
+
+                                {{-- Form Delete --}}
+                                <form action="{{ route('media_partner.destroy', $partner) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus mitra {{ $partner->name }}?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 @empty
                     <p class="col-span-full text-gray-500">Belum ada Media Partner yang terdaftar.</p>

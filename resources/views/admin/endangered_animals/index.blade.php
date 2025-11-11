@@ -59,9 +59,6 @@
                         <img src="{{ asset('storage/' . $animal->image_path) }}" alt="{{ $animal->name }}" class="w-full h-48 object-cover">
                         <div class="p-4">
                             <h3 class="font-bold text-lg text-gray-800 mb-2">{{ $animal->name }}</h3>
-                            {{-- Catatan: field 'origin' tidak ada di model, diasumsikan harusnya ada relasi ke $animal->map->name atau field lain. Menggunakan field dummy untuk saat ini. --}}
-                            <p class="text-sm text-gray-600 mb-4">Asal: Lokasi Peta (Placeholder)</p> 
-                            
                             {{-- Tombol Aksi: Detail (Edit) dan Hapus --}}
                             <div class="flex space-x-2 w-full">
                                 {{-- Tombol Detail/Edit --}}

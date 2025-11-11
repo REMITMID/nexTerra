@@ -57,27 +57,50 @@
 
             {{-- Grid Daftar Edukasi --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @forelse ($education_items as $item)
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 flex flex-col justify-between items-center text-center" style="min-height: 250px;">
-                        {{-- Jika ada gambar, tampilkan di sini --}}
-                        @if ($item->image_path)
-                             <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-32 object-cover mb-3 rounded">
-                        @else
-                            <div class="w-full h-32 bg-gray-200 flex items-center justify-center mb-3 rounded">
-                                <span class="text-gray-500 text-sm">No Image</span>
-                            </div>
-                        @endif
-                        <h3 class="font-bold text-lg text-gray-800 mb-4">{{ $item->title }}</h3>
-                        
-                        {{-- Tombol Detail/Edit akan diarahkan ke route show --}}
-                        <a href="{{ route('education.show', $item) }}" class="block w-3/4 text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150">
-                            Detail
-                        </a>
-                    </div>
-                @empty
-                    <p class="col-span-full text-gray-500">Belum ada konten edukasi yang dibuat.</p>
-                @endforelse
-            </div>
+    @forelse ($education_items as $item)
+        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            
+            {{-- Bagian Gambar --}}
+            @if ($item->image_path)
+                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
+                {{-- Diubah h-32 menjadi h-48 agar lebih proporsional seperti gambar --}}
+            @else
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500 text-sm">No Image</span>
+                </div>
+            @endif
+            
+            {{-- Konten Teks dan Tombol --}}
+            <div class="p-4"> 
+                {{-- Konten Teks (Menggantikan 'ooook' pada gambar) --}}
+                <h3 class="font-bold text-lg text-gray-800 mb-3">{{ $item->title ?? 'Judul Tidak Ada' }}</h3>
+                
+                {{-- Konten Deskripsi Singkat (Opsional) --}}
+                <p class="text-sm text-gray-600 mb-3">{{ Str::limit($item->content ?? '', 50) }}</p>
+
+                {{-- Grup Tombol Detail & Hapus --}}
+                <div class="flex space-x-2 mt-4">
+                    {{-- Tombol Detail/Edit (Route show digunakan untuk Edit Form Admin) --}}
+                    <a href="{{ route('education.show', $item) }}" class="flex-1 text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150">
+                        Detail
+                    </a>
+
+                    {{-- Form Delete --}}
+                    <form action="{{ route('education.destroy', $item) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus konten {{ $item->title ?? "ini" }}?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150">
+                            Hapus
+                        </button>
+                    </form>
+                </div>
+            </div> {{-- End of p-4 --}}
+            
+        </div>
+    @empty
+        <p class="col-span-3 text-gray-500">Belum ada konten edukasi yang dibuat.</p>
+    @endforelse
+</div>
         </main>
 
         {{-- Tombol Tambah (Fixed, Pojok Kanan Bawah) --}}

@@ -26,24 +26,22 @@
             </div>
 
             {{-- Grid Daftar Peta --}}
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 @forelse ($maps as $map)
-                    {{-- Item Peta --}}
-                    <a href="{{ route('map.show', $map) }}" class="block bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 text-center hover:shadow-xl transition duration-200">
-                        {{-- Tampilkan Gambar Peta --}}
-                        @if ($map->image_path)
-                             <img src="{{ asset('storage/' . $map->image_path) }}" alt="{{ $map->name }}" class="w-full h-32 object-contain mb-3 rounded">
-                        @else
-                            <div class="w-full h-32 bg-gray-200 flex items-center justify-center mb-3 rounded">
-                                <span class="text-gray-500 text-sm">No Map Image</span>
+                    {{-- Setiap item adalah link ke halaman detail --}}
+                    <a href="{{ route('map.show', $map) }}" class="block bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition duration-200">
+                        <div class="relative w-full h-48">
+                            <img src="{{ asset('storage/' . $map->image_path) }}" alt="{{ $map->name }}" class="w-full h-full object-cover">
+                            
+                            {{-- Nama dan Lokasi di Bawah Gambar --}}
+                            <div class="absolute inset-x-0 bottom-0 bg-black bg-opacity-60 text-white p-2 text-center">
+                                <p class="text-sm font-semibold truncate">{{ $map->name }}</p>
                             </div>
-                        @endif
-                        
-                        <h3 class="font-bold text-lg text-gray-800 mt-2">{{ $map->name }}</h3>
-                        <p class="text-sm text-gray-500">{{ $map->description ?? 'Lokasi' }}</p>
+                        </div>
                     </a>
                 @empty
-                    <p class="col-span-6 text-gray-500 text-center">Belum ada data Peta/Lokasi yang dibuat.</p>
+                    <p class="col-span-6 text-gray-500 text-center">Data hewan langka belum tersedia.</p>
                 @endforelse
             </div>
         </div>

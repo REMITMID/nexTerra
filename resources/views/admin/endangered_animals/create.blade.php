@@ -60,9 +60,6 @@
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold">Tambah Hewan Langka</h2>
                     <a href="{{ route('endangered_animals.index') }}" class="text-white hover:text-gray-200 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8m-7 1V4a1 1 0 011-1h6a1 1 0 011 1v16a1 1 0 01-1 1H7a1 1 0 01-1-1z" />
-                        </svg>
                     </a>
                 </div>
 

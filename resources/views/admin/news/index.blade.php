@@ -56,23 +56,30 @@
             {{-- Grid Daftar Berita --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($news_items as $item)
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 flex flex-col justify-between items-center text-center" style="min-height: 350px;">
-                        {{-- Tampilkan Poster Berita --}}
-                        @if ($item->poster_path)
-                             <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-64 object-cover mb-3 rounded">
-                        @else
-                            <div class="w-full h-64 bg-gray-200 flex items-center justify-center mb-3 rounded">
-                                <span class="text-gray-500 text-sm">No Poster Available</span>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+                        <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">{{ $item->title }}</h3>
+                            {{-- Tombol Aksi: Detail (Edit) dan Hapus --}}
+                            <div class="flex space-x-2 w-full">
+                                {{-- Tombol Detail/Edit --}}
+                                <a href="{{ route('news.show', $item) }}" class="flex-1 text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150">
+                                    Detail
+                                </a>
+
+                                {{-- Form Delete --}}
+                                <form action="{{ route('news.destroy', $item) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus Hewan Langka {{ $item->title }}?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150">
+                                        Hapus
+                                    </button>
+                                </form>
                             </div>
-                        @endif
-                        
-                        {{-- Tombol Detail/Edit akan diarahkan ke route show --}}
-                        <a href="{{ route('news.show', $item) }}" class="block w-full text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150 mt-auto">
-                            Detail
-                        </a>
+                        </div>
                     </div>
                 @empty
-                    <p class="col-span-full text-gray-500">Belum ada konten berita yang dibuat.</p>
+                    <p class="col-span-full text-gray-500">Belum ada data hewan langka.</p>
                 @endforelse
             </div>
         </main>

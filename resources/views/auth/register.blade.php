@@ -60,6 +60,17 @@
                         Sign Up
                     </button>
 
+                    {{-- resources/views/auth/login.blade.php / register.blade.php --}}
+
+                    <div class="mt-4">
+                        <a href="{{ route('auth.google') }}" class="w-full flex items-center justify-center space-x-2 bg-white border border-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 transition duration-150">
+                            <svg class="h-5 w-5" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 10.15v5.82h12.78c-.58 3.53-2.61 6.86-5.8 8.9v5.6c4.66-2.58 8-7.7 8-13.92 0-9.45-7.66-17.1-17-17.1-9.37 0-17 7.65-17 17.1s7.63 17.1 17 17.1c4.5 0 8.52-1.78 11.58-4.9l-4.1-4.1c-1.8 1.58-4.25 2.5-7.48 2.5-5.3 0-9.62-4.32-9.62-9.62s4.32-9.63 9.62-9.63c2.75 0 4.9.96 6.56 2.45l4.08-4.08C32.52 11.63 28.5 10.15 24 10.15z"/>
+                            </svg>
+                            <span>Login with Google</span>
+                        </a>
+                    </div>
+
                     <div class="mt-6 text-center text-sm">
                         Already have an account?
                         <a class="text-[#056461] hover:underline font-medium" href="{{ route('login') }}">

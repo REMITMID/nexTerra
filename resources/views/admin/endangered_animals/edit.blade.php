@@ -56,63 +56,81 @@
             </div>
 
             {{-- Form Edit Hewan Langka --}}
-            <div class="bg-[#38761D] p-6 rounded-lg shadow-md text-white">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold">Edit Hewan Langka</h2>
-                    <a href="{{ route('endangered_animals.index') }}" class="text-white hover:text-gray-200 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8m-7 1V4a1 1 0 011-1h6a1 1 0 011 1v16a1 1 0 01-1 1H7a1 1 0 01-1-1z" />
-                        </svg>
-                    </a>
-                </div>
+            <div class="bg-[#38761D] p-6 rounded-lg shadow-2xl text-white max-w-5xl mx-auto mt-12">
+                    <form action="{{ route('endangered_animals.update', $animal->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT') 
 
-                <form action="{{ route('endangered_animals.update', $animal) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT') {{-- Penting untuk metode UPDATE --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            {{-- KOLOM KIRI: Input Teks --}}
+                            <div>
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-medium mb-1">Nama Hewan</label>
+                                    <input type="text" id="name" name="name" class="w-full p-2 rounded bg-gray border border-gray-600 focus:ring focus:ring-gray-500 text-gray-900" value="{{ old('name', $animal->name) }}" placeholder="Orang Utan (Pongo)">
+                                    @error('name') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                    <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium mb-1">Nama Hewan</label>
-                        <input type="text" id="name" name="name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring focus:ring-gray-500 text-white" value="{{ old('name', $animal->name) }}">
-                        @error('name') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
-                    </div>
+                                <div class="mb-4">
+                                    <label for="image_upload" class="block text-sm font-medium mb-1">Foto Hewan</label>
+                                    <div class="flex items-center space-x-2 w-full p-2 rounded bg-white border border-gray-600 text-gray-900">
+                                        {{-- Tombol Pilih File --}}
 
-                    <div class="mb-4">
-                        <label for="image" class="block text-sm font-medium mb-1">Foto Hewan</label>
-                        <input type="file" id="image" name="image" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#6AA84F] file:text-white hover:file:bg-[#5C9041]">
+                                        <label for="image_upload" class="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white file:text-white hover:file:bg-[#5C9041] cursor-pointer">
+                                        </label>
+                                        <input type="file" id="image" name="image" class="w-full p-2 rounded bg-white-700 border border-white-600 text-gray file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#6AA84F] file:text-white hover:file:bg-[#5C9041]">
                         @error('image') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
-                        @if ($animal->image_path)
-                            <p class="text-sm text-gray-300 mt-2">Gambar saat ini:</p>
-                            <img src="{{ asset('storage/' . $animal->image_path) }}" alt="{{ $animal->name }}" class="mt-2 w-32 h-32 object-cover rounded">
-                        @endif
-                    </div>
 
-                    <div class="mb-4">
-                            <label for="map_id" class="block text-sm font-medium mb-1">Asal Hewan (Peta)</label>
-                            <select id="map_id" name="map_id" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring focus:ring-gray-500 text-white">
-                                <option value="">-- Pilih Lokasi Peta --</option>
-                                @foreach ($maps as $map)
-                                    <option value="{{ $map->id }}" {{ old('map_id', $animal->map_id) == $map->id ? 'selected' : '' }}>
-                                        {{ $map->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('map_id') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
-                    </div>
+                                    </div>
+                                    @error('image') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                    <div class="mb-6">
-                        <label for="description" class="block text-sm font-medium mb-1">Deskripsi Hewan</label>
-                        <textarea id="description" name="description" rows="5" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring focus:ring-gray-500 text-white">{{ old('description', $animal->description) }}</textarea>
-                        @error('description') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
-                    </div>
+                                <div class="mb-4">
+                                    <label for="map_id" class="block text-sm font-medium mb-1">Asal Hewan</label>
+                                    <select id="map_id" name="map_id" class="w-full p-2 rounded bg-white border border-gray-600 focus:ring focus:ring-gray-500 text-gray-900">
+                                        <option value="">-- Pilih Lokasi Peta --</option>
+                                        @foreach ($maps as $map)
+                                            <option value="{{ $map->id }}" {{ old('map_id', $animal->map_id) == $map->id ? 'selected' : '' }}>
+                                                {{ $map->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('map_id') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                    <div class="flex justify-between items-center space-x-4">
+                                <div class="mb-6">
+                                    <label for="description" class="block text-sm font-medium mb-1">Deskripsi Hewan</label>
+                                    <textarea id="description" name="description" rows="5" class="w-full p-2 rounded bg-white border border-gray-600 focus:ring focus:ring-gray-500 text-gray-900">{{ old('description', $animal->description) }}</textarea>
+                                    @error('description') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
 
-                        <div class="flex space-x-4">
-                            <a href="{{ route('endangered_animals.index') }}" class="bg-[#B03C36] hover:bg-[#97332E] text-white font-bold py-2 px-6 rounded transition duration-150">Batal</a>
-                            <button type="submit" class="bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-6 rounded transition duration-150">Update</button>
+                            {{-- KOLOM KANAN: Gambar Preview dan Tombol Update --}}
+                            <div class="flex flex-col justify-end items-center">
+                                <div class="w-full bg-white rounded-lg shadow-md overflow-hidden flex items-center justify-center p-2 mb-4 flex-grow">
+                                    @if ($animal->image_path)
+                                        <img src="{{ asset('storage/' . $animal->image_path) }}" alt="{{ $animal->name }}" class="w-full h-auto max-h-96 object-cover rounded">
+                                    @else
+                                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">No Image Preview</div>
+                                    @endif
+                                </div>
+
+                                {{-- Tombol Update dan Batal (DIKOREKSI AGAR SEPERTI GAMBAR) --}}
+                                <div class="flex justify-end w-full space-x-4 mt-auto">
+                                    <a href="{{ route('endangered_animals.index') }}" class="bg-[#B03C36] hover:bg-[#97332E] text-white font-bold py-2 px-6 rounded transition duration-150">Batal</a>
+                                    <button type="submit" class="bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-6 rounded transition duration-150">Update</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                    
+                    {{-- Tombol Hapus Konten (Berada di luar form UPDATE) --}}
+                    <form action="{{ route('endangered_animals.destroy', $animal) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus hewan ini?');" class="mt-4">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-150">Hapus Konten</button>
+                    </form>
+                </div>
             </div>
         </main>
     </div>

@@ -1,4 +1,5 @@
-<x-guest-layout>
+@extends('layouts.public')
+@section('content')
     <div class="min-h-screen bg-gray-100 pb-12">
         
         {{-- Hero Header --}}
@@ -44,4 +45,4 @@
             </div>
         </div>
     </div>
-</x-guest-layout>
+@endsection

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\EndangeredAnimalController;
+use App\Http\Controllers\Auth\SocialiteController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('beranda');
@@ -55,6 +56,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('map', MapController::class)->except(['index', 'show']);
 });
 
+Route::prefix('auth')->group(function () {
+    // Redirect ke Google (Saat tombol "Login with Google" diklik)
+    Route::get('google', [SocialiteController::class, 'redirectToGoogle'])->name('auth.google');
+    
+    // Menerima callback dari Google (Memproses login)
+    Route::get('google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+});
 
 Route::get('endangered_animals', [EndangeredAnimalController::class, 'index'])->name('endangered_animals.index');
 Route::get('endangered_animals/{endangeredAnimal}', [EndangeredAnimalController::class, 'show'])->name('endangered_animals.show');

@@ -1,12 +1,9 @@
-<x-guest-layout>
+
+<x-app-layout>
+    <x-slot name="header"></x-slot>
     <div class="min-h-screen bg-gray-100">
         {{-- Header / Hero Section --}}
-        <div class="relative h-96 bg-cover bg-center" style="background-image: url('{{ asset('images/profile_hero.jpg') }}');">
-            <div class="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center text-white">
-                <h1 class="text-4xl font-bold mb-2">PROFIL PENGGUNA</h1>
-                <p class="text-lg">MARI KITA DISKUSIKAN TERKAIT HEWAN LANGKA</p>
-            </div>
-        </div>
+
 
         {{-- Konten Utama Profil --}}
         <div class="max-w-4xl mx-auto -mt-24 p-4">
@@ -50,13 +47,4 @@
             </div>
         </div>
     </div>
-</x-guest-layout>
-
-{{-- Footer --}}
-<footer class="bg-[#38761D] text-white py-4 mt-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center space-x-6">
-        <a href="#" class="hover:text-gray-300"><svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"></svg></a>
-        <a href="#" class="hover:text-gray-300"><svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"></svg></a>
-        <a href="#" class="hover:text-gray-300"><svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"></svg></a>
-    </div>
-</footer>
+</x-app-layout>

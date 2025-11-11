@@ -74,28 +74,34 @@
         </div>
 
         {{-- SECTION 3: LOKASI HEWAN LANGKA DI DUNIA (PETA) --}}
-        <div class="py-12">
+        <div class="bg-gray-50 py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-gray-800">
-                        Lokasi Hewan Langka di Dunia
+                        Mengenali Hewan Langka di Dunia
                     </h2>
                     <a href="{{ route('map.index') }}" class="text-sm text-gray-600 hover:text-[#38761D] font-semibold">
                         VIEW ALL →
                     </a>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                    @forelse ($maps as $map)
-                        <div class="bg-[#D9D9D9] rounded-lg shadow-md overflow-hidden border border-gray-300 p-4 text-center">
-                            <img src="{{ asset('storage/' . $map->image_path) }}" alt="{{ $map->name }}" class="w-full h-24 object-contain mb-2">
-                            <p class="text-sm font-semibold text-gray-700">{{ $map->name }}</p>
-                            <p class="text-xs text-gray-500">{{ $map->description ?? 'Lokasi' }}</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                @forelse ($maps as $map)
+                    {{-- Setiap item adalah link ke halaman detail --}}
+                    <a href="{{ route('map.show', $map) }}" class="block bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition duration-200">
+                        <div class="relative w-full h-48">
+                            <img src="{{ asset('storage/' . $map->image_path) }}" alt="{{ $map->name }}" class="w-full h-full object-cover">
+                            
+                            {{-- Nama dan Lokasi di Bawah Gambar --}}
+                            <div class="absolute inset-x-0 bottom-0 bg-black bg-opacity-60 text-white p-2 text-center">
+                                <p class="text-sm font-semibold truncate">{{ $map->name }}</p>
+                            </div>
                         </div>
-                    @empty
-                        <p class="col-span-6 text-gray-500 text-center">Data peta belum tersedia.</p>
-                    @endforelse
-                </div>
+                    </a>
+                @empty
+                    <p class="col-span-6 text-gray-500 text-center">Data hewan langka belum tersedia.</p>
+                @endforelse
+            </div>
             </div>
         </div>
     </body>

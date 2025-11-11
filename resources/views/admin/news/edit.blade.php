@@ -49,44 +49,60 @@
                 </button>
             </div>
 
-            {{-- Form Edit Berita --}}
-            <div class="bg-[#38761D] p-6 rounded-lg shadow-md text-white">
+            {{-- Form Edit Berita (Dua Kolom) --}}
+            <div class="bg-[#38761D] p-6 rounded-lg shadow-2xl text-white max-w-5xl mx-auto mt-12">
                 <h2 class="text-2xl font-bold mb-6">Edit Berita</h2>
 
-                <form action="{{ route('news.update', parameters: $item->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('news.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT') {{-- Penting untuk UPDATE --}}
+                    @method('PUT') 
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {{-- Kolom Kiri: Judul dan Deskripsi --}}
+                        {{-- Kolom Kiri: Input Teks --}}
                         <div>
                             <div class="mb-4">
                                 <label for="title" class="block text-sm font-medium mb-1">Nama Berita</label>
-                                <input type="text" id="title" name="title" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring focus:ring-gray-500 text-white" value="{{ old('title', $item->title) }}" placeholder="Judul Berita Baru">
+                                {{-- KOREKSI WARNA --}}
+                                <input type="text" id="title" name="title" class="w-full p-2 rounded bg-white border border-gray-600 focus:ring focus:ring-gray-500 text-gray-900" value="{{ old('title', $item->title) }}" placeholder="Judul Berita Baru">
                                 @error('title') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-4">
                                 <label for="poster" class="block text-sm font-medium mb-1">Poster Berita</label>
-                                <input type="file" id="poster" name="poster" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#6AA84F] file:text-white hover:file:bg-[#5C9041]">
+                                <div class="mb-4">
+                                <label for="image" class="block text-sm font-medium mb-1">Foto Peta</label>
+                                {{-- Input file kustom --}}
+                                <div class="flex items-center space-x-2 w-full p-2 rounded bg-white border border-gray-600 text-gray-900">
+                                        {{-- Tombol Pilih File --}}
+
+                                        <label for="image_upload" class="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white file:text-white hover:file:bg-[#5C9041] cursor-pointer">
+                                        </label>
+                                        <input type="file" id="image" name="image" class="w-full p-2 rounded bg-white-700 border border-white-600 text-gray file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#6AA84F] file:text-white hover:file:bg-[#5C9041]">
+                        @error('image') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+
+                                    </div>
+                                    @error('image') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                                @error('image') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                            </div>
                                 @error('poster') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
-                                @if ($item->poster_path)
-                                    <p class="text-sm text-gray-300 mt-2">Poster saat ini:</p>
-                                    <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="mt-2 w-32 h-32 object-cover rounded">
-                                @endif
                             </div>
 
                             <div class="mb-4">
                                 <label for="description" class="block text-sm font-medium mb-1">Deskripsi Berita</label>
-                                <textarea id="description" name="description" rows="8" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring focus:ring-gray-500 text-white">{{ old('description', $item->description) }}</textarea>
+                                {{-- KOREKSI WARNA --}}
+                                <textarea id="description" name="description" rows="8" class="w-full p-2 rounded bg-white border border-gray-600 focus:ring focus:ring-gray-500 text-gray-900">{{ old('description', $item->description) }}</textarea>
                                 @error('description') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         {{-- Kolom Kanan: Preview/Kontrol --}}
-                        <div class="flex flex-col justify-between" style="min-height: 400px;">
-                            <div class="bg-white p-4 rounded flex items-center justify-center text-gray-800 font-bold h-full">
-                                <h3 class="text-xl">Preview Poster</h3>
+                        <div class="flex flex-col justify-between">
+                            <div class="bg-white p-4 rounded flex flex-col items-center justify-center text-gray-800 font-bold h-full border border-gray-200 shadow-md flex-grow">
+                                @if ($item->poster_path)
+                                    <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-auto max-h-96 object-contain rounded">
+                                @else
+                                    <h3 class="text-xl">Preview Poster</h3>
+                                @endif
                             </div>
 
                             <div class="flex justify-end space-x-4 mt-6">

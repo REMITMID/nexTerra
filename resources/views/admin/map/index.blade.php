@@ -57,39 +57,30 @@
             {{-- Grid Daftar Peta --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($maps as $map)
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 flex flex-col justify-between items-center text-center" style="min-height: 280px;">
-                        
-                        {{-- Tampilkan Gambar Peta --}}
-                        @if ($map->image_path)
-                             <img src="{{ asset('storage/' . $map->image_path) }}" alt="{{ $map->name }}" class="w-full h-32 object-contain mb-3 rounded">
-                        @else
-                            <div class="w-full h-32 bg-gray-200 flex items-center justify-center mb-3 rounded">
-                                <span class="text-gray-500 text-sm">No Map Image</span>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+                        <img src="{{ asset('storage/' . $map->image_path) }}" alt="{{ $map->name }}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">{{ $map->name }}</h3>
+                            {{-- Tombol Aksi: Detail (Edit) dan Hapus --}}
+                            <div class="flex space-x-2 w-full">
+                                {{-- Tombol Detail/Edit --}}
+                                <a href="{{ route('map.show', $map) }}" class="flex-1 text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150">
+                                    Detail
+                                </a>
+
+                                {{-- Form Delete --}}
+                                <form action="{{ route('map.destroy', $map) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus Hewan Langka {{ $map->name }}?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150">
+                                        Hapus
+                                    </button>
+                                </form>
                             </div>
-                        @endif
-                        
-                        <h3 class="font-bold text-lg text-gray-800 mt-2">{{ $map->name }}</h3>
-                        
-                        {{-- Tombol Aksi (Update dan Delete) --}}
-                        <div class="flex space-x-2 w-full mt-auto">
-                            {{-- Tombol Update/Edit diarahkan ke route map.show, yang akan menampilkan form edit untuk admin --}}
-                            <a href="{{ route('map.show', $map) }}" class="flex-1 text-center bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-4 rounded transition duration-150">
-                                Update
-                            </a>
-
-                            {{-- Form Delete --}}
-                            <form action="{{ route('map.destroy', $map) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus Peta {{ $map->name }}?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150">
-                                    Hapus
-                                </button>
-                            </form>
                         </div>
-
                     </div>
                 @empty
-                    <p class="col-span-full text-gray-500">Belum ada data Peta/Lokasi yang dibuat.</p>
+                    <p class="col-span-full text-gray-500">Belum ada data hewan langka.</p>
                 @endforelse
             </div>
         </main>
