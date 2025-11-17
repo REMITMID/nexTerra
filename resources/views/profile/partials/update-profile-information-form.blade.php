@@ -56,7 +56,7 @@
 
             {{-- Email (opsional, karena Breeze memisahkannya) --}}
             {{-- Anda bisa memindahkannya ke sini jika ingin --}}
-
+            
             <div class="flex justify-between items-center mt-6">
                 <a href="{{ route('profile.view') }}" class="bg-[#B03C36] hover:bg-[#97332E] text-white font-bold py-2 px-6 rounded transition duration-150">Batal</a>
                 <button type="submit" class="bg-[#6AA84F] hover:bg-[#5C9041] text-white font-bold py-2 px-6 rounded transition duration-150">Update</button>

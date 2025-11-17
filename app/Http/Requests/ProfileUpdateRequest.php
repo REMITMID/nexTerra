@@ -17,13 +17,14 @@ class ProfileUpdateRequest extends FormRequest
 
     public function rules(): array
     {
-        $user = $this->user();
-        
+        // Coba biarkan hanya aturan yang paling ringan.
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-            'social_media' => ['nullable', 'string', 'max:255'], 
-            'description' => ['nullable', 'string'],
+            // Nonaktifkan validasi email yang paling ketat untuk sementara
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'], 
+            'social_media' => ['nullable'], 
+            'description' => ['nullable'],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // File upload
         ];
     }
 }

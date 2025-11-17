@@ -25,46 +25,43 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-    dd("hallo");
-    $user = $request->user();
+    public function update(Request $request): RedirectResponse // <-- Ubah dari ProfileUpdateRequest
+        {
+            $user = $request->user();
 
-        // 1. Validasi fields baru
-        $request->validate([
-            'social_media' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // File upload
-        ]);
+            // 1. Lakukan Validasi Manual di sini
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'social_media' => ['nullable', 'string', 'max:255'],
+                'description' => ['nullable', 'string'],
+                'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Termasuk file
+            ]);
 
-        // 2. Proses File Upload
-        if ($request->hasFile('profile_photo')) {
-            // Hapus foto lama jika ada
-            if ($user->profile_photo_path) {
-                Storage::disk('public')->delete($user->profile_photo_path);
+            // 2. Proses File Upload
+            if ($request->hasFile('profile_photo')) {
+                // Hapus foto lama jika ada
+                if ($user->profile_photo_path) {
+                    Storage::disk('public')->delete($user->profile_photo_path);
+                }
+                
+                // Simpan foto baru
+                $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+                $user->profile_photo_path = $photoPath;
             }
+
+            // 3. Update fields (menggunakan data yang sudah divalidasi)
+            // Gunakan $validated, dan hilangkan profile_photo dari fillable karena sudah ditangani di atas
+            $user->fill(collect($validated)->except('profile_photo')->toArray()); 
             
-            // Simpan foto baru
-            $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
-            $user->profile_photo_path = $photoPath;
+            // 4. Simpan data
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
+
+            $user->save();
+
+            return Redirect::route('profile.view')->with('status', 'profile-updated'); 
         }
-
-        // 3. Update fields standar (name, email)
-        $user->fill($request->validated());
-
-        // 4. Update fields baru
-        $user->social_media = $request->social_media;
-        $user->description = $request->description;
-
-        // 5. Simpan data
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        return Redirect::route('profile.view')->with('status', 'profile-updated'); // Redirect ke view profile baru
-    }
 
     /**
      * Delete the user's account.
